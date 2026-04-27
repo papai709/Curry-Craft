@@ -20,7 +20,7 @@ import userRouter from "./routes/user.route.js"
 import recipeRouter from "./routes/recipe.route.js"
 import commentRouter from "./routes/comment.route.js"
 import likeRouter from "./routes/like.route.js"
-
+import subscriptionRouter from "./routes/subscription.route.js"
 
 //routes declaration
 app.use("/api/v1/user", userRouter)
@@ -31,5 +31,7 @@ app.use("/api/v1/recipe", recipeRouter)
 app.use("/api/v1/comment", commentRouter)
 
 app.use("/api/v1/like", likeRouter)
+
+app.use("/api/v1/subscription", subscriptionRouter)
 
 export { app }

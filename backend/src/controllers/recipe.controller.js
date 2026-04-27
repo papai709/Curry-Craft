@@ -4,7 +4,7 @@ import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js"
-
+import { User } from "../models/user.model.js"
 const getAllVideos = asyncHandler(async (req, res) => {
     const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
     
@@ -87,11 +87,23 @@ const getVideoById = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Invalid Video ID");
     }
 
-    const recipe = await Recipe.findById(videoId).populate("owner", "username fullName avatar");
+    // 1. Fetch video and increment the views count by 1
+    const recipe = await Recipe.findByIdAndUpdate(
+        videoId,
+        {$inc:{views: 1}},
+        {new: true}
+    ).populate("owner", "username fullName avatar");
 
     if (!recipe) {
         throw new ApiError(404, "Recipe not found");
     }
+
+    // Add this video to the logged-in user's watch history
+    // Since verifyJWT is applied to this route, req.user will exist
+    await User.findByIdAndUpdate(
+        req.user._id,
+        { $addToSet: { watchHistory: videoId } }
+    );
 
     return res
         .status(200)
