@@ -424,7 +424,7 @@ const getWatchHistory = asyncHandler(async(req, res) => {
         },
         {
             $lookup: {
-                from: "videos",
+                from: "recipes",
                 localField: "watchHistory",
                 foreignField: "_id",
                 as: "watchHistory",

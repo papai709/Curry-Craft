@@ -65,34 +65,7 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, { isLiked: true }, "Comment liked successfully"));
 });
 
-const toggleTweetLike = asyncHandler(async (req, res) => {
-    const { tweetId } = req.params;
 
-    if (!isValidObjectId(tweetId)) {
-        throw new ApiError(400, "Invalid tweet ID");
-    }
-
-    const existingLike = await Like.findOne({
-        tweet: tweetId,
-        likedBy: req.user._id
-    });
-
-    if (existingLike) {
-        await Like.findByIdAndDelete(existingLike._id);
-        return res
-            .status(200)
-            .json(new ApiResponse(200, { isLiked: false }, "Tweet unliked successfully"));
-    }
-
-    await Like.create({
-        tweet: tweetId,
-        likedBy: req.user._id
-    });
-
-    return res
-        .status(200)
-        .json(new ApiResponse(200, { isLiked: true }, "Tweet liked successfully"));
-});
 
 const getLikedVideos = asyncHandler(async (req, res) => {
     // We use an aggregation pipeline to fetch the videos a user has liked
