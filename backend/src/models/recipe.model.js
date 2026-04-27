@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const recipeSchema = new Schema(
@@ -12,15 +12,16 @@ const recipeSchema = new Schema(
             required: true
         },
         title: {
-            type: String, 
-            required: true
+            type: String,
+            required: true,
+            trim: true
         },
         description: {
-            type: String, 
+            type: String,
             required: true
         },
         duration: {
-            type: Number, 
+            type: Number,
             required: true
         },
         views: {
@@ -36,7 +37,7 @@ const recipeSchema = new Schema(
             ref: "User"
         }
 
-    }, 
+    },
     {
         timestamps: true
     }
